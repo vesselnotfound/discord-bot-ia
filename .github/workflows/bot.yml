@@ -1,0 +1,29 @@
+name: Discord Bot Online
+
+on:
+  workflow_dispatch:
+  push:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Copiar repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Rodar bot
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python bot.py
